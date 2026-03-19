@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAVE Works — Dashboard Prospection</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir:    #0a0a0a;
+    --dark:    #111111;
+    --s1:      #1a1a1a;
+    --s2:      #222222;
+    --s3:      #2a2a2a;
+    --orange:  #e85d20;
+    --orange2: #ff7a3d;
+    --op:      rgba(232,93,32,0.1);
+    --blanc:   #f5f3ef;
+    --blanc2:  #e0ddd8;
+    --gris:    #888580;
+    --gris2:   #555250;
+    --vert:    #22c55e;
+    --vert-p:  rgba(34,197,94,0.1);
+    --jaune:   #eab308;
+    --jaune-p: rgba(234,179,8,0.1);
+    --rouge:   #ef4444;
+    --rouge-p: rgba(239,68,68,0.1);
+    --bleu:    #3b82f6;
+    --bleu-p:  rgba(59,130,246,0.1);
+    --border:  rgba(255,255,255,0.06);
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    background: var(--noir);
+    color: var(--blanc);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 32px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-left { }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--orange);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    color: #fff;
+  }
+  .logo-txt {
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    color: var(--blanc);
+  }
+  .logo-txt span { color: var(--orange); }
+
+  .header-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gris);
+    margin-left: 42px;
+  }
+
+  .header-right {
+    text-align: right;
+  }
+  .header-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gris);
+    margin-bottom: 4px;
+  }
+  .header-update {
+    font-size: 11px;
+    color: var(--vert);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+  .update-dot {
+    width: 6px; height: 6px;
+    background: var(--vert);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+
+  /* ── KPI CARDS ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3px;
+    margin-bottom: 28px;
+  }
+
+  .kpi-card {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+    border-top: 2px solid transparent;
+    transition: background .3s;
+  }
+  .kpi-card:hover { background: var(--s2); }
+  .kpi-card.orange { border-top-color: var(--orange); }
+  .kpi-card.vert   { border-top-color: var(--vert); }
+  .kpi-card.jaune  { border-top-color: var(--jaune); }
+  .kpi-card.bleu   { border-top-color: var(--bleu); }
+  .kpi-card.rouge  { border-top-color: var(--rouge); }
+
+  .kpi-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gris);
+    margin-bottom: 10px;
+  }
+  .kpi-val {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .kpi-card.orange .kpi-val { color: var(--orange); }
+  .kpi-card.vert   .kpi-val { color: var(--vert); }
+  .kpi-card.jaune  .kpi-val { color: var(--jaune); }
+  .kpi-card.bleu   .kpi-val { color: var(--bleu); }
+  .kpi-card.rouge  .kpi-val { color: var(--rouge); }
+
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--gris2);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── SECTION TITLE ── */
+  .sec-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .st-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+  .st-line { flex:1; height:1px; background:var(--border); }
+  .st-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gris2);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── TABLE PRINCIPALE ── */
+  .table-wrap {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead tr {
+    background: var(--s2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  thead th {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gris);
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background .2s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--s2); }
+
+  tbody td {
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--blanc2);
+    vertical-align: middle;
+  }
+
+  /* Nom prospect */
+  .prospect-name {
+    font-weight: 500;
+    color: var(--blanc);
+    font-size: 13px;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .prospect-addr {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gris2);
+    letter-spacing: 0.04em;
+  }
+
+  /* Niche badge */
+  .niche-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .nb-artisan  { background:rgba(59,130,246,.1);  color:#60a5fa; border:1px solid rgba(59,130,246,.2); }
+  .nb-coiffeur { background:rgba(236,72,153,.1); color:#f472b6; border:1px solid rgba(236,72,153,.2); }
+  .nb-resto    { background:rgba(234,179,8,.1);  color:#fbbf24; border:1px solid rgba(234,179,8,.2); }
+  .nb-coach    { background:rgba(34,197,94,.1);  color:#4ade80; border:1px solid rgba(34,197,94,.2); }
+
+  /* Statut */
+  .statut-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 3px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: opacity .2s;
+    border: none;
+    outline: none;
+  }
+  .statut-badge:hover { opacity:.8; }
+
+  .sb-fait     { background:var(--vert-p);  color:var(--vert);  border:1px solid rgba(34,197,94,.2); }
+  .sb-envoye   { background:var(--bleu-p);  color:var(--bleu);  border:1px solid rgba(59,130,246,.2); }
+  .sb-relance  { background:var(--jaune-p); color:var(--jaune); border:1px solid rgba(234,179,8,.2); }
+  .sb-interesse{ background:var(--op);      color:var(--orange);border:1px solid rgba(232,93,32,.2); }
+  .sb-vendu    { background:rgba(34,197,94,.2); color:var(--vert); border:1px solid rgba(34,197,94,.4); font-weight:700; }
+  .sb-refus    { background:var(--rouge-p); color:var(--rouge); border:1px solid rgba(239,68,68,.2); }
+  .sb-todo     { background:var(--s3);      color:var(--gris);  border:1px solid var(--border); }
+
+  .sb-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+
+  /* Prix */
+  .prix-cell {
+    font-weight: 700;
+    color: var(--orange);
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .prix-cell.vendu { color: var(--vert); }
+
+  /* Gain potentiel */
+  .gain-cell {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--gris);
+    white-space: nowrap;
+  }
+
+  /* Actions */
+  .action-btns { display:flex; gap:6px; flex-wrap:wrap; }
+  .action-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--gris);
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .action-btn:hover { border-color:var(--orange); color:var(--orange); }
+  .action-btn.primary { background:var(--orange); color:#fff; border-color:var(--orange); }
+  .action-btn.primary:hover { background:var(--orange2); }
+
+  /* Notes */
+  .notes-cell {
+    font-size: 12px;
+    color: var(--gris);
+    font-style: italic;
+    max-width: 180px;
+  }
+
+  /* ── FORMULAIRE AJOUT ── */
+  .add-section {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+
+  .add-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .add-form {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 2fr auto;
+    gap: 8px;
+    align-items: end;
+  }
+
+  .add-field { display:flex; flex-direction:column; gap:5px; }
+  .add-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gris);
+  }
+  .add-input, .add-select {
+    background: var(--s2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 9px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--blanc);
+    outline: none;
+    transition: border-color .25s;
+    appearance: none;
+  }
+  .add-input:focus, .add-select:focus { border-color: var(--orange); }
+  .add-input::placeholder { color: var(--gris2); }
+
+  .add-btn {
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 9px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .25s;
+    white-space: nowrap;
+    align-self: end;
+  }
+  .add-btn:hover { background: var(--orange2); }
+
+  /* ── REVENUS ── */
+  .revenus-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .rev-card {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    padding: 24px;
+    border-radius: 4px;
+  }
+
+  .rev-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gris);
+    margin-bottom: 20px;
+  }
+
+  .rev-bars { display:flex; flex-direction:column; gap:10px; }
+
+  .rev-bar-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 50px;
+    gap: 10px;
+    align-items: center;
+  }
+  .rev-bar-label { font-size: 12px; color: var(--gris); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rev-bar-track {
+    height: 6px;
+    background: var(--s3);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .rev-bar-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: var(--orange);
+    transition: width .8s ease;
+  }
+  .rev-bar-fill.vert { background: var(--vert); }
+  .rev-bar-fill.gris { background: var(--gris2); }
+  .rev-bar-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--blanc2);
+    text-align: right;
+  }
+
+  /* Objectifs */
+  .obj-list { display:flex; flex-direction:column; gap:12px; }
+  .obj-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    background: var(--s2);
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    transition: background .25s;
+  }
+  .obj-item:hover { background: var(--s3); }
+  .obj-left { display:flex; align-items:center; gap:10px; }
+  .obj-icon { font-size: 16px; }
+  .obj-name { font-size: 13px; color: var(--blanc2); }
+  .obj-target { font-family:'DM Mono',monospace; font-size:11px; color:var(--gris); }
+  .obj-progress {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .obj-progress.done { color: var(--vert); }
+  .obj-progress.partial { color: var(--jaune); }
+  .obj-progress.todo { color: var(--gris2); }
+
+  /* ── MESSAGES TEMPLATES ── */
+  .msg-section {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+
+  .msg-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+
+  .msg-card {
+    background: var(--s2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px;
+    transition: border-color .25s;
+  }
+  .msg-card:hover { border-color: rgba(232,93,32,.3); }
+
+  .msg-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  .mt-initial  { background:var(--bleu-p);  color:var(--bleu); }
+  .mt-relance  { background:var(--jaune-p); color:var(--jaune); }
+  .mt-interesse{ background:var(--op);      color:var(--orange); }
+  .mt-vendu    { background:var(--vert-p);  color:var(--vert); }
+
+  .msg-text {
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--gris);
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+
+  .msg-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gris2);
+    background: var(--s3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all .2s;
+    display: inline-block;
+  }
+  .msg-copy:hover { border-color:var(--orange); color:var(--orange); }
+  .msg-copy.copied { color:var(--vert); border-color:rgba(34,197,94,.3); }
+
+  /* ── FOOTER ── */
+  .dashboard-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--gris2);
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--s2);
+    border: 1px solid rgba(34,197,94,.3);
+    border-radius: 6px;
+    padding: 12px 20px;
+    font-size: 13px;
+    color: var(--vert);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all .3s;
+    pointer-events: none;
+  }
+  .toast.show { opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast">✓ <span id="toast-msg">Copié !</span></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo-row">
+      <div class="logo-icon">M</div>
+      <div class="logo-txt">MAVE<span>.</span>works</div>
+    </div>
+    <div class="header-sub">Tableau de bord prospection — Saison 1</div>
+  </div>
+  <div class="header-right">
+    <div class="header-date" id="current-date"></div>
+    <div class="header-update">
+      <div class="update-dot"></div>
+      Mis à jour en temps réel
+    </div>
+  </div>
+</div>
+
+<!-- KPI CARDS -->
+<div class="kpi-grid">
+  <div class="kpi-card orange">
+    <div class="kpi-label">Prospects ciblés</div>
+    <div class="kpi-val" id="kpi-total">0</div>
+    <div class="kpi-sub">Sites créés & à envoyer</div>
+  </div>
+  <div class="kpi-card bleu">
+    <div class="kpi-label">Envoyés</div>
+    <div class="kpi-val" id="kpi-envoye">0</div>
+    <div class="kpi-sub">Maquettes livrées</div>
+  </div>
+  <div class="kpi-card jaune">
+    <div class="kpi-label">En discussion</div>
+    <div class="kpi-val" id="kpi-interesse">0</div>
+    <div class="kpi-sub">Clients intéressés</div>
+  </div>
+  <div class="kpi-card vert">
+    <div class="kpi-label">Vendus</div>
+    <div class="kpi-val" id="kpi-vendu">0</div>
+    <div class="kpi-sub">Commandes confirmées</div>
+  </div>
+  <div class="kpi-card orange">
+    <div class="kpi-label">Revenus générés</div>
+    <div class="kpi-val" id="kpi-revenus">0€</div>
+    <div class="kpi-sub">Encaissé + en cours</div>
+  </div>
+</div>
+
+<!-- TABLE PRINCIPALE -->
+<div class="sec-title">
+  <span class="st-label">Prospects</span>
+  <div class="st-line"></div>
+  <span class="st-count" id="count-label">6 fiches</span>
+</div>
+
+<div class="table-wrap">
+  <table id="prospect-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Prospect</th>
+        <th>Niche</th>
+        <th>Service</th>
+        <th>Prix</th>
+        <th>Statut</th>
+        <th>Gain potentiel</th>
+        <th>Notes</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="prospect-tbody">
+    </tbody>
+  </table>
+</div>
+
+<!-- AJOUTER UN PROSPECT -->
+<div class="add-section">
+  <div class="add-title">+ Ajouter un prospect</div>
+  <div class="add-form">
+    <div class="add-field">
+      <label class="add-label">Nom du prospect</label>
+      <input type="text" class="add-input" id="inp-nom" placeholder="Ex: Boulangerie Dupont">
+    </div>
+    <div class="add-field">
+      <label class="add-label">Niche</label>
+      <select class="add-select" id="inp-niche">
+        <option value="artisan">🔧 Artisan</option>
+        <option value="coiffeur">✂️ Coiffeur</option>
+        <option value="resto">🍽️ Restaurant</option>
+        <option value="coach">🌿 Coach</option>
+        <option value="autre">📌 Autre</option>
+      </select>
+    </div>
+    <div class="add-field">
+      <label class="add-label">Service</label>
+      <select class="add-select" id="inp-service">
+        <option value="Site vitrine 1 page">Site 1 page</option>
+        <option value="Site vitrine multi-pages">Site multi-pages</option>
+        <option value="Landing page">Landing page</option>
+        <option value="Redesign">Redesign</option>
+      </select>
+    </div>
+    <div class="add-field">
+      <label class="add-label">Prix</label>
+      <select class="add-select" id="inp-prix">
+        <option value="49">49€</option>
+        <option value="89" selected>89€</option>
+        <option value="149">149€</option>
+        <option value="249">249€</option>
+      </select>
+    </div>
+    <div class="add-field">
+      <label class="add-label">Notes</label>
+      <input type="text" class="add-input" id="inp-notes" placeholder="Adresse, infos, remarques...">
+    </div>
+    <button class="add-btn" onclick="addProspect()">Ajouter →</button>
+  </div>
+</div>
+
+<!-- REVENUS + OBJECTIFS -->
+<div class="revenus-section">
+  <div class="rev-card">
+    <div class="rev-title">Revenus par prospect (potentiel)</div>
+    <div class="rev-bars" id="rev-bars"></div>
+  </div>
+
+  <div class="rev-card">
+    <div class="rev-title">Objectifs de la semaine</div>
+    <div class="obj-list">
+      <div class="obj-item">
+        <div class="obj-left">
+          <span class="obj-icon">📤</span>
+          <div>
+            <div class="obj-name">Maquettes envoyées</div>
+            <div class="obj-target">Objectif : 6 cette semaine</div>
+          </div>
+        </div>
+        <div class="obj-progress todo" id="obj-envoye">0 / 6</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-left">
+          <span class="obj-icon">💬</span>
+          <div>
+            <div class="obj-name">Clients intéressés</div>
+            <div class="obj-target">Objectif : 2 retours positifs</div>
+          </div>
+        </div>
+        <div class="obj-progress todo" id="obj-interesse">0 / 2</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-left">
+          <span class="obj-icon">💰</span>
+          <div>
+            <div class="obj-name">Premier client vendu</div>
+            <div class="obj-target">Objectif : 1 commande confirmée</div>
+          </div>
+        </div>
+        <div class="obj-progress todo" id="obj-vendu">0 / 1</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-left">
+          <span class="obj-icon">⭐</span>
+          <div>
+            <div class="obj-name">Premier avis Comeup</div>
+            <div class="obj-target">Objectif : 1 avis 5 étoiles</div>
+          </div>
+        </div>
+        <div class="obj-progress todo" id="obj-avis">0 / 1</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MESSAGES TEMPLATES -->
+<div class="msg-section">
+  <div class="add-title">Messages prêts à envoyer</div>
+  <div class="msg-grid">
+    <div class="msg-card">
+      <span class="msg-tag mt-initial">1er contact</span>
+      <p class="msg-text">"Bonjour, je suis étudiant en développement web et j'ai créé une maquette de site pour votre activité. Voilà le résultat : [lien]. Si ça vous plaît, je vous le finalise pour [prix]€. Sinon, pas de souci. [Prénom]"</p>
+      <button class="msg-copy" onclick="copyMsg(this, 'Bonjour, je suis étudiant en développement web et j\'ai créé une maquette de site pour votre activité. Voilà le résultat : [lien]. Si ça vous plaît, je vous le finalise pour [prix]€. Sinon, pas de souci.')">Copier</button>
+    </div>
+    <div class="msg-card">
+      <span class="msg-tag mt-relance">Relance J+3</span>
+      <p class="msg-text">"Bonjour, juste une petite relance — avez-vous eu le temps de voir le site que j'ai créé pour vous ? [lien]. Toujours disponible si vous avez des questions 🙂"</p>
+      <button class="msg-copy" onclick="copyMsg(this, 'Bonjour, juste une petite relance — avez-vous eu le temps de voir le site que j\'ai créé pour vous ? [lien]. Toujours disponible si vous avez des questions 🙂')">Copier</button>
+    </div>
+    <div class="msg-card">
+      <span class="msg-tag mt-interesse">Client intéressé</span>
+      <p class="msg-text">"Super ! Pour démarrer j'aurais besoin de : votre logo (ou je peux en créer un simple), vos textes et photos, et vos coordonnées exactes. Je vous envoie tout dans les 5 jours ouvrés après réception."</p>
+      <button class="msg-copy" onclick="copyMsg(this, 'Super ! Pour démarrer j\'aurais besoin de : votre logo (ou je peux en créer un simple), vos textes et photos, et vos coordonnées exactes. Je vous envoie tout dans les 5 jours ouvrés après réception.')">Copier</button>
+    </div>
+    <div class="msg-card">
+      <span class="msg-tag mt-vendu">Après livraison</span>
+      <p class="msg-text">"Voilà votre site livré ! [lien final]. Si tout vous convient, n'hésitez pas à laisser un avis sur Comeup — ça m'aide vraiment à me lancer. Merci et bonne continuation !"</p>
+      <button class="msg-copy" onclick="copyMsg(this, 'Voilà votre site livré ! [lien final]. Si tout vous convient, n\'hésitez pas à laisser un avis sur Comeup — ça m\'aide vraiment à me lancer. Merci et bonne continuation !')">Copier</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="dashboard-footer">
+  <span>MAVE.works · Dashboard Prospection v1.0</span>
+  <span id="footer-stats"></span>
+</div>
+
+<script>
+  // ── DONNÉES INITIALES ──
+  const PROSPECTS_DEFAULT = [
+    { id:1, nom:'SM Multi Services', addr:'Paris 18e', niche:'artisan', service:'Site vitrine multi-pages', prix:89, statut:'fait', notes:'20 ans exp. Plomberie multi-services' },
+    { id:2, nom:'AGS Services', addr:'Maisons-Alfort 94', niche:'artisan', service:'Site vitrine multi-pages', prix:89, statut:'fait', notes:'22 ans, certifiés PG QUALIBAT RGE, 4.9★' },
+    { id:3, nom:'Bernard & Sylvestre', addr:'86 rue Marcadet, Paris 18e', niche:'artisan', service:'Site vitrine multi-pages', prix:89, statut:'fait', notes:'21 ans, diplômés 1990, garantie 2 ans AXA' },
+    { id:4, nom:'Artisan 148', addr:'Paris 11e', niche:'artisan', service:'Site vitrine multi-pages', prix:89, statut:'fait', notes:'Urgence 24h/24, 6 corps de métier' },
+    { id:5, nom:'Salon Doudeauville', addr:'59 rue Doudeauville, Paris 18e', niche:'coiffeur', service:'Site vitrine 1 page', prix:49, statut:'fait', notes:'Visagiste mixte, sans RDV, Château Rouge' },
+    { id:6, nom:'Kalinéa Coiffure', addr:'39 rue Lecourbe, Paris 15e', niche:'coiffeur', service:'Site vitrine multi-pages', prix:89, statut:'fait', notes:'Zohra+équipe, 4.3★, lissage brésilien, domicile' },
+  ];
+
+  const STATUTS = ['fait','todo','envoye','relance','interesse','vendu','refus'];
+  const STATUT_LABELS = {
+    fait:      { label:'✅ Site fait',     cls:'sb-fait' },
+    todo:      { label:'⏳ À faire',       cls:'sb-todo' },
+    envoye:    { label:'📤 Envoyé',        cls:'sb-envoye' },
+    relance:   { label:'🔔 Relancé',       cls:'sb-relance' },
+    interesse: { label:'🔥 Intéressé',     cls:'sb-interesse' },
+    vendu:     { label:'💰 Vendu',         cls:'sb-vendu' },
+    refus:     { label:'❌ Refus',         cls:'sb-refus' },
+  };
+  const NICHE_LABELS = {
+    artisan:'artisan', coiffeur:'coiffeur', resto:'resto', coach:'coach', autre:'autre'
+  };
+  const NICHE_CLS = { artisan:'nb-artisan', coiffeur:'nb-coiffeur', resto:'nb-resto', coach:'nb-coach', autre:'nb-artisan' };
+  const NICHE_ICONS = { artisan:'🔧', coiffeur:'✂️', resto:'🍽️', coach:'🌿', autre:'📌' };
+
+  // ── STORAGE ──
+  function load() {
+    const raw = localStorage.getItem('mave_prospects');
+    return raw ? JSON.parse(raw) : PROSPECTS_DEFAULT;
+  }
+  function save(data) {
+    try { localStorage.setItem('mave_prospects', JSON.stringify(data)); } catch(e) {}
+  }
+
+  let prospects = load();
+  let nextId = prospects.length ? Math.max(...prospects.map(p=>p.id)) + 1 : 1;
+
+  // ── RENDER ──
+  function render() {
+    renderTable();
+    renderKPIs();
+    renderBars();
+    renderObjectifs();
+    renderFooter();
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('prospect-tbody');
+    document.getElementById('count-label').textContent = prospects.length + ' fiche' + (prospects.length > 1 ? 's' : '');
+
+    tbody.innerHTML = prospects.map((p, i) => {
+      const st = STATUT_LABELS[p.statut] || STATUT_LABELS.todo;
+      const nc = NICHE_CLS[p.niche] || 'nb-artisan';
+      const ni = NICHE_ICONS[p.niche] || '📌';
+      const prixCls = p.statut === 'vendu' ? 'vendu' : '';
+      const nextStatuts = STATUTS.filter(s => s !== p.statut);
+
+      return `
+        <tr>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gris2)">${String(i+1).padStart(2,'0')}</td>
+          <td>
+            <span class="prospect-name">${p.nom}</span>
+            <span class="prospect-addr">${p.addr || ''}</span>
+          </td>
+          <td><span class="niche-badge ${nc}">${ni} ${p.niche}</span></td>
+          <td style="font-size:12px;color:var(--gris);white-space:nowrap">${p.service}</td>
+          <td><span class="prix-cell ${prixCls}">${p.prix}€</span></td>
+          <td>
+            <select class="statut-badge ${st.cls}" onchange="changeStatut(${p.id}, this.value)" style="background:transparent;border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em">
+              ${STATUTS.map(s => `<option value="${s}" ${s===p.statut?'selected':''} style="background:#1a1a1a;color:#f5f3ef">${STATUT_LABELS[s].label}</option>`).join('')}
+            </select>
+          </td>
+          <td><span class="gain-cell">${p.statut==='vendu' ? '✅ '+p.prix+'€ encaissé' : '→ '+p.prix+'€'}</span></td>
+          <td><span class="notes-cell">${p.notes || '—'}</span></td>
+          <td>
+            <div class="action-btns">
+              <button class="action-btn primary" onclick="copyMsg(this, 'Bonjour, je suis étudiant en développement web et j\\'ai créé une maquette de site pour ${p.nom}. Voilà le résultat : [lien]. Si ça vous plaît, je vous le finalise pour ${p.prix}€. Sinon, pas de souci.')">📋 Msg</button>
+              <button class="action-btn" onclick="deleteProspect(${p.id})">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function renderKPIs() {
+    const total = prospects.length;
+    const envoye = prospects.filter(p => ['envoye','relance','interesse','vendu'].includes(p.statut)).length;
+    const interesse = prospects.filter(p => ['interesse'].includes(p.statut)).length;
+    const vendu = prospects.filter(p => p.statut === 'vendu').length;
+    const revenus = prospects.filter(p => p.statut === 'vendu').reduce((a,p) => a + p.prix, 0);
+    const potentiel = prospects.reduce((a,p) => a + p.prix, 0);
+
+    animateNum('kpi-total', total);
+    animateNum('kpi-envoye', envoye);
+    animateNum('kpi-interesse', interesse);
+    animateNum('kpi-vendu', vendu);
+    document.getElementById('kpi-revenus').textContent = revenus + '€ / ' + potentiel + '€';
+  }
+
+  function renderBars() {
+    const maxPrix = Math.max(...prospects.map(p => p.prix), 1);
+    document.getElementById('rev-bars').innerHTML = prospects.map(p => {
+      const pct = Math.round((p.prix / maxPrix) * 100);
+      const cls = p.statut === 'vendu' ? 'vert' : p.statut === 'refus' ? 'gris' : '';
+      return `
+        <div class="rev-bar-row">
+          <div class="rev-bar-label" title="${p.nom}">${p.nom.length > 18 ? p.nom.slice(0,18)+'…' : p.nom}</div>
+          <div class="rev-bar-track"><div class="rev-bar-fill ${cls}" style="width:${pct}%"></div></div>
+          <div class="rev-bar-val">${p.prix}€</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderObjectifs() {
+    const envoye = prospects.filter(p => ['envoye','relance','interesse','vendu'].includes(p.statut)).length;
+    const interesse = prospects.filter(p => p.statut === 'interesse').length;
+    const vendu = prospects.filter(p => p.statut === 'vendu').length;
+
+    setObj('obj-envoye', envoye, 6);
+    setObj('obj-interesse', interesse, 2);
+    setObj('obj-vendu', vendu, 1);
+    setObj('obj-avis', vendu, 1); // approximation
+  }
+
+  function setObj(id, val, max) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = val + ' / ' + max;
+    el.className = 'obj-progress ' + (val >= max ? 'done' : val > 0 ? 'partial' : 'todo');
+  }
+
+  function renderFooter() {
+    const potentiel = prospects.reduce((a,p) => a + p.prix, 0);
+    const encaisse = prospects.filter(p => p.statut === 'vendu').reduce((a,p) => a + p.prix, 0);
+    document.getElementById('footer-stats').textContent =
+      `Potentiel total : ${potentiel}€ · Encaissé : ${encaisse}€ · Prospects : ${prospects.length}`;
+  }
+
+  // ── ACTIONS ──
+  function changeStatut(id, newStatut) {
+    const p = prospects.find(x => x.id === id);
+    if (p) { p.statut = newStatut; save(prospects); render(); }
+  }
+
+  function addProspect() {
+    const nom = document.getElementById('inp-nom').value.trim();
+    if (!nom) { showToast('Entrez un nom de prospect'); return; }
+    const p = {
+      id: nextId++,
+      nom,
+      addr: '',
+      niche: document.getElementById('inp-niche').value,
+      service: document.getElementById('inp-service').value,
+      prix: +document.getElementById('inp-prix').value,
+      statut: 'todo',
+      notes: document.getElementById('inp-notes').value.trim(),
+    };
+    prospects.push(p);
+    save(prospects);
+    render();
+    document.getElementById('inp-nom').value = '';
+    document.getElementById('inp-notes').value = '';
+    showToast('Prospect ajouté !');
+  }
+
+  function deleteProspect(id) {
+    if (!confirm('Supprimer ce prospect ?')) return;
+    prospects = prospects.filter(p => p.id !== id);
+    save(prospects);
+    render();
+    showToast('Prospect supprimé');
+  }
+
+  function copyMsg(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copié';
+      btn.classList.add('copied');
+      showToast('Message copié dans le presse-papier');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function animateNum(id, target) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    let cur = 0;
+    const step = Math.ceil(target / 20);
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.textContent = cur;
+      if (cur >= target) clearInterval(t);
+    }, 30);
+  }
+
+  // Date
+  function updateDate() {
+    const now = new Date();
+    document.getElementById('current-date').textContent =
+      now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  }
+
+  // INIT
+  updateDate();
+  render();
+</script>
+</body>
+</html>
